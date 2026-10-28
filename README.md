@@ -73,48 +73,43 @@
 
 ## 安装
 
-### 前置
+### 一键安装（已收录市场后）
 
-1. DSH 已安装并能在 `~/.dsh/profiles/<profile>` 下加载插件；
-2. WeChatAgent 已跑通收发（reader `5031`、hook `30001`、bridge `11229`、DSH 桥接插件 `11230`）。
+- **DSH Desktop**：设置 → **插件市场** → 搜 `quiet hours` → 安装；
+- **命令行 / web profile**：`dsh plugin --profile web add github:rnfmabjE/dsh-quiet-hours`
+  （安装成功后会自动把包名写进 `dsh.profile.bundles`）。
 
-### 方式 A：DSH 插件管理器（推荐）
+> 桌面版的 `desktop` profile 由应用独占，命令行执行 `dsh plugin --profile desktop …` 会报
+> `profile "desktop" is managed exclusively by the Electron application`，请用应用内安装。
 
-在 DSH 里用 `plugin_manager` 的 `install_bundle` 指向本仓库目录（绝对路径），它会负责安装与启用，
-必要时重启 DSH。
+收录状态与提交方法见 [docs/marketplace.md](docs/marketplace.md)。
 
-### 方式 B：手动链接
+### 手动安装
+
+完整步骤（含前置检查、profile 覆盖层配置、真机验收、升级/卸载）见
+**[docs/deploy.md](docs/deploy.md)**。最短路径：
 
 ```powershell
-# 1) 把仓库放到任意位置后，链接进 profile
+# 1) 取代码，放到长期不变的目录
+git clone https://github.com/rnfmabjE/dsh-quiet-hours.git D:\tools\dsh-quiet-hours
+
+# 2) 链接进 DSH profile（也可以改用 plugin_manager 的 install_bundle）
 New-Item -ItemType Junction `
   -Path  "$env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-quiet-hours" `
-  -Target "D:\path\to\dsh-quiet-hours"
-
-# macOS / Linux
-# ln -s /path/to/dsh-quiet-hours ~/.dsh/profiles/desktop/node_modules/dsh-quiet-hours
+  -Target "D:\tools\dsh-quiet-hours"
 ```
 
-```jsonc
-// ~/.dsh/profiles/desktop/package.json
-{
-  "dsh": {
-    "profile": {
-      "bundles": [
-        // …已有的 bundle
-        "dsh-quiet-hours"
-      ]
-    }
-  }
-}
-```
+3. 把 `"dsh-quiet-hours"` 加进 profile `package.json` 的 `dsh.profile.bundles`；
+4. 改 `cordis.patch.yml` 里的 `reply`（文案）、`accountNames`（群里昵称）、`windows`（作息）；
+5. **从托盘完全退出 DSH 再打开**（宿主插件只在启动时加载）。
 
-然后从托盘**完全退出 DSH 再打开**（宿主插件只在启动时加载）。
+前置要求：Node.js ≥ 20；DSH `0.2.0-rc.2`；WeChatAgent `0.3.9` 已跑通收发
+（reader `5031`、hook `30001`、bridge `11229`、DSH 桥接插件 `11230`）。
 
 ### 验证安装
 
-在桌面 DSH 会话里问一句「微信自动回复现在什么状态」，会调用 `quiet_hours_status`；
-或者到 WeChatAgent 的 `state/away/mode.json` 看当前模式。
+在桌面 DSH 会话里问一句「静音时段现在什么状态」，会调用 `quiet_hours_status`，
+返回里应看到 `probe.reader=true`、`probe.hook=true`。
 
 不依赖 DSH 的自检：
 
@@ -257,6 +252,20 @@ lib/state.mjs       审计、限流、override 文件
 - 固定文案由本机直接发出，不经过模型服务；
 - 仓库不含任何账号、会话、聊天记录或密钥；运行时状态写在 WeChatAgent 的 `state/away/`，已被 `.gitignore` 排除。
 
+## 第三方依赖与声明
+
+本仓库以 MIT 发布，**只覆盖本仓库的代码与文档**：
+
+- 需要本机已安装并运行 **WeChatAgent**（第三方 Windows 项目，作者 Derpyu520，
+  来源 <https://github.com/sourcepro5/WeChatAgent>，其分发自带 MIT 许可）。
+  本仓库不包含、也不重新分发它的源码、安装包、原生 DLL 或运行环境；两者无隶属或背书关系；
+- 不包含微信客户端或原生 hook；非官方自动化可能违反平台条款并带来账号风险；
+- 本插件运行在 **DeepSeek Harness** 之上，DSH 与模型服务受其自身许可与条款约束；
+- 运行时只用 Node.js 内置模块，没有 npm 依赖。
+
+完整说明（含 WeChatAgent 许可与版权行、微信平台提示、商标与致谢）见
+[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。
+
 ## 目录
 
 ```
@@ -274,6 +283,7 @@ lib/state.mjs       审计、限流、override 文件
 ├─ CHANGELOG.md
 ├─ CONTRIBUTING.md
 ├─ SECURITY.md
+├─ THIRD-PARTY-NOTICES.md   第三方依赖与许可
 └─ LICENSE
 ```
 

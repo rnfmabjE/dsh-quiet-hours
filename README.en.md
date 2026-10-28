@@ -43,12 +43,19 @@ The plugin has no runtime dependencies and only talks to `127.0.0.1`.
 
 ## Install
 
-1. Link the repository into a DSH profile's `node_modules` (or install it as a bundle with
-   `plugin_manager install_bundle`).
-2. Add `"dsh-quiet-hours"` to `dsh.profile.bundles` in the profile `package.json`.
-3. Fully quit DSH from the tray and start it again.
+Full local deployment guide: [docs/deploy.md](docs/deploy.md) (Chinese). Short version:
 
-See the [Chinese README](README.md) for the full walkthrough, configuration table and troubleshooting.
+```powershell
+git clone https://github.com/rnfmabjE/dsh-quiet-hours.git D:\tools\dsh-quiet-hours
+New-Item -ItemType Junction `
+  -Path  "$env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-quiet-hours" `
+  -Target "D:\tools\dsh-quiet-hours"
+```
+
+Then add `"dsh-quiet-hours"` to `dsh.profile.bundles`, edit `cordis.patch.yml`
+(`reply`, `accountNames`, `windows`), and fully quit/reopen DSH from the tray.
+
+See the [Chinese README](README.md) for the configuration table and troubleshooting.
 
 ## Configuration (short version)
 
@@ -97,6 +104,20 @@ context — no WeChat connection and no messages are sent.
 Only loopback calls to the local reader (`5031`) and hook (`30001`). No outbound network, no
 telemetry, no credentials in the repository. Runtime state is written to WeChatAgent's
 `state/away/` and ignored by git.
+
+## Third-party notices
+
+MIT applies to **this repository only**:
+
+- The plugin requires a locally installed **WeChatAgent** (third-party Windows project by Derpyu520,
+  distributed under MIT with its own copyright line). This repository does not bundle or redistribute
+  its source, installer, native DLLs or runtime, and is not affiliated with or endorsed by it.
+- No WeChat client or native hook is included. Unofficial automation may violate platform terms and
+  puts the account at risk.
+- The plugin runs on **DeepSeek Harness**; DSH and its model service have their own licenses and terms.
+- Runtime uses Node.js built-ins only — no npm dependencies.
+
+See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) (Chinese) for the full text.
 
 ## License
 

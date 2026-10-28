@@ -37,19 +37,20 @@
     "README.md",
     "README.en.md",
     "CHANGELOG.md",
+    "THIRD-PARTY-NOTICES.md",
     "LICENSE"
   ],
   "scripts": {
     "test": "node test/smoke.mjs && node test/wiring.mjs",
     "check": "node check.mjs"
   },
-  "peerDependencies": {
-    "@deepseek-ai/dsh": ">=0.2.0-rc.2"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rnfmabjE/dsh-quiet-hours.git"
   },
-  "peerDependenciesMeta": {
-    "@deepseek-ai/dsh": {
-      "optional": true
-    }
+  "homepage": "https://github.com/rnfmabjE/dsh-quiet-hours#readme",
+  "bugs": {
+    "url": "https://github.com/rnfmabjE/dsh-quiet-hours/issues"
   },
   "dsh": {
     "bundle": {

@@ -16,3 +16,4 @@
 - `quiet_hours_status` / `quiet_hours_control` 工具，以及 `state/away/override.json` 手动开关。
 - `check.mjs` 现场自检（reader / hook / 会话映射，可选发一条测试到文件传输助手）。
 - 单测与接线测试（`npm test`），GitHub Actions CI（Node 20 / 22）。
+- 第三方依赖与许可说明：`THIRD-PARTY-NOTICES.md`（WeChatAgent 的 MIT 许可与版权行、微信平台提示、商标声明）。
