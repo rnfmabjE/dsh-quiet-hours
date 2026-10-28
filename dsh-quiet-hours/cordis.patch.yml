@@ -1,0 +1,31 @@
+# dsh-quiet-hours bundle patch
+# `name` 必须是真实包名；cordis 按 name 从 profile 的 node_modules 解析目录。
+# 想改文案/作息：直接改下面的 config，然后重启 DSH。
+- insert:
+    - id: quiet-hours
+      name: dsh-quiet-hours
+      config:
+        # WeChatAgent 的 data/workspace 目录；不填则用 WECHAT_AGENT_ROOT 或 D:/WeChat Agent/data/workspace
+        projectRoot: 'D:/WeChat Agent/data/workspace'
+        enabled: true
+        timeZone: Asia/Shanghai
+        windows:
+          - days: [1, 2, 3, 4, 5]
+            start: '09:00'
+            end: '12:00'
+          - days: [1, 2, 3, 4, 5]
+            start: '14:00'
+            end: '18:00'
+        # 时段内的固定回复（≤300 字，换行会被压成空格；改这里即可换文案）
+        reply: '梁文峰不是我兄弟，梁文谷才是'
+        # wake=群里被 @/点名才回；always=都回；never=群里不回
+        groupReply: wake
+        # 本账号在群里的昵称，用来判断有没有被 @（示例：['阿鲸']）
+        accountNames: []
+        groupWakeAnyMention: false
+        replyCooldownSeconds: 180
+        maxRepliesPerChatPerHour: 12
+        holidays: []
+        extraWorkdays: []
+        # 固定文案发不出去时，是否退回让 AI 正常回复
+        fallbackToAgent: false
