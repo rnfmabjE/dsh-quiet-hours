@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "WeChat quiet hours",
+    "description": "Silences the WeChat AI during work windows and answers incoming messages with one fixed line; resumes automatically outside those windows."
+  }
+}

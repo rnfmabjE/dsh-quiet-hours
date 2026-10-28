@@ -1,0 +1,40 @@
+# 完整配置示例（复制到 cordis.patch.yml 的 config 下）
+#
+# 注意：bundle patch 里同名 id 的 config 是整体替换，不是深合并；
+# 改哪一项都要保留其他项，否则会回到代码里的默认值。
+
+projectRoot: 'D:/WeChat Agent/data/workspace'
+enabled: true
+timeZone: Asia/Shanghai
+
+windows:
+  - days: [1, 2, 3, 4, 5]
+    start: '09:00'
+    end: '12:00'
+  - days: [1, 2, 3, 4, 5]
+    start: '14:00'
+    end: '18:00'
+  # 周六上午也免打扰
+  - days: [6]
+    start: '09:00'
+    end: '12:00'
+
+# 时段内的固定回复（仓库默认就是这句；≤300 字，换行会被压成空格）
+reply: '梁文峰不是我兄弟，梁文谷才是'
+
+# 按会话覆盖文案（可选）
+replyByChat:
+  wechat:private:1000000000: '在忙，晚点回你。'
+
+groupReply: wake          # wake | always | never
+accountNames: []          # 例：['阿鲸']
+groupWakeAnyMention: false
+
+replyCooldownSeconds: 180
+maxRepliesPerChatPerHour: 12
+
+holidays: []              # 例：['2026-10-01', '2026-10-02']
+extraWorkdays: []         # 例：['2026-10-11']
+
+fallbackToAgent: false
+log: true
